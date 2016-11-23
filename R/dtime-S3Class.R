@@ -1,4 +1,27 @@
-# library(fields)
+#' @title rdist.earth
+#' @export
+rdist.earth <- function (x1, x2 = NULL)
+{
+  R <- 6378.388
+  # coslat1 <- cos(x1[, 2])
+  # sinlat1 <- sin(x1[, 2])
+  # coslon1 <- cos(x1[, 1])
+  # sinlon1 <- sin(x1[, 1])
+  coslat1 <- cos((x1[, 2] * pi)/180)
+  sinlat1 <- sin((x1[, 2] * pi)/180)
+  coslon1 <- cos((x1[, 1] * pi)/180)
+  sinlon1 <- sin((x1[, 1] * pi)/180)
+
+  coslat2 <- cos((x2[, 2] * pi)/180)
+  sinlat2 <- sin((x2[, 2] * pi)/180)
+  coslon2 <- cos((x2[, 1] * pi)/180)
+  sinlon2 <- sin((x2[, 1] * pi)/180)
+  pp <- cbind(coslat1 * coslon1, coslat1 * sinlon1, sinlat1) %*%
+    t(cbind(coslat2 * coslon2, coslat2 * sinlon2, sinlat2))
+  return(R * acos(ifelse(abs(pp) > 1, 1 * sign(pp), pp)))
+}
+
+
 #' @export
 begin.Date <- function(x, ...) {
   if (!is(x, "Date"))
@@ -20,14 +43,14 @@ begin <- function(x, ...) UseMethod("begin")
 end <- function(x, ...) UseMethod("end")
 
 #' @export
-seq.dtime <- function(x, ...) as.Date(x$begin:x$end)#only used for daily data
+seq.dtime <- function(x, ...) as.Date(x$begin:x$end, origin = "1970-01-01")#only used for daily data
 #seq(x$begin, x$end, by = x$by)
 #' @export
-seq_Date <- function(x, ...) as.Date(begin.Date(x):end.Date(x))#quickly return, just for daily
+seq_Date <- function(x, ...) as.Date(begin.Date(x):end.Date(x), origin = "1970-01-01")#quickly return, just for daily
 # seq <- function(x, ...) UseMethod("seq")
 #' @export
 print.dtime <- function(x, ...){
-  cat(paste0("stationId", x$station, ":  "))
+  cat(paste0("stationId ", x$station, ":  "))
   cat(sprintf("begin at: %s, end at: %s, %d %ss\n", x$begin, x$end, x$datelen, x$by))
   #cat("data:\n")
   #print(head(x$data))
@@ -85,7 +108,8 @@ MissInfoSingle <- function(x, station, time_day, clipdata = FALSE,
                            detailInfo = TRUE, daysInfo = TRUE, collapse = ", ")
 {
   missing <- Inf; ndata = 0; beginPoint = 1; endPoint = 1; maxgap = 0;#maxgap continue Missing
-  DateBegin <- "1951-01-01"#for all is na x
+  #if x is blank, dateBegin and dateEnd set to be "1951-01-01"
+  DateBegin <- "1951-01-01"
   DateEnd <- "1951-01-01"
   run <- rle(!is.na(x)); len <- run$lengths
   Id <- c(0, cumsum(len))
