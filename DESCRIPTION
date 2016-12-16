@@ -1,7 +1,7 @@
 Package: MissInfo
 Type: Package
 Title: missing information detect and interpolate
-Version: 0.1.0
+Version: 1.1
 Author: Dongdong Kong
 Maintainer: kongdd<kongdd@mail2.sysu.edu.cn>
 Description: Meteorological stations data detail missing information detect and interpolate with common methods. 

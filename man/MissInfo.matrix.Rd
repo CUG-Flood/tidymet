@@ -4,8 +4,8 @@
 \alias{MissInfo.matrix}
 \title{MissInfo}
 \usage{
-\method{MissInfo}{matrix}(data, time_day, stationId, clipdata = FALSE,
-  progress = TRUE, ...)
+\method{MissInfo}{matrix}(data, time_day = as.Date(rownames(data)),
+  stationId = colnames(data), clipdata = FALSE, progress = TRUE, ...)
 }
 \arguments{
 \item{data}{matrix data with row dimemsion is date and col is stations}
@@ -14,7 +14,7 @@
 
 \item{stationId}{stations number id or names}
 
-\item{clipdata}{if clipdata is true, x_trim will be return}
+\item{clipdata}{if clipdata is true, NAs at head and tail will be trimed. And trimed data will be return}
 }
 \description{
 detect all station missing infomation for single meteorological element
