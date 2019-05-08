@@ -1,11 +1,22 @@
-Package: MissInfo
+Package: missInfo
 Type: Package
 Title: missing information detect and interpolate
-Version: 1.1
-Author: Dongdong Kong
-Maintainer: kongdd<kongdd@mail2.sysu.edu.cn>
+Version: 0.1.1
+Authors@R: c(
+    person("Dongdong", "Kong", role = c("aut", "cre"), email = "kongdd.sysu@gmail.com"))
 Description: Meteorological stations data detail missing information detect and interpolate with common methods. 
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.1
+Depends:
+    R (>= 3.1)
+Imports: zoo, data.table, magrittr, 
+    lubridate,
+    foreach, iterators, 
+    plyr
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 2.1.0)
+VignetteBuilder: knitr

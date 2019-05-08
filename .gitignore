@@ -2,5 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
-MissInfo.Rproj
-.Rbuildignore
+inst/doc
+OUTPUT/
+
+# ignore data
+*.csv
+
+README.knit.md
