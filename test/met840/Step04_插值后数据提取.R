@@ -6,17 +6,17 @@ library(lubridate)
 load("data/SPEI_InputData.rda")
 fstation <- "说明文档/中国气候日志数据V3station839.xlsx"
 stations <- read.xlsx(fstation)
-stationId <- stations$StationNo %>% as.character()
+site <- stations$StationNo %>% as.character()
 ## 对evp完全缺测的站点进行处理
-evp.small <- data_out$EVP.small[stationId]
-evp.big <- data_out$EVP.big[stationId]
+evp.small <- data_out$EVP.small[site]
+evp.big <- data_out$EVP.big[site]
 Id_small.miss <- which(is.na(names(evp.small)))
 Id_big.miss <- which(is.na(names(evp.big)))
 
 for (i in Id_big.miss) 
-  evp.big[[i]] <- list(data = NA, station = stationId[i], begin = NA, end = NA, by = "day")
+  evp.big[[i]] <- list(data = NA, station = site[i], begin = NA, end = NA, by = "day")
 for (i in Id_small.miss)
-  evp.small[[i]] <- list(data = NA, station = stationId[i], begin = NA, end = NA, by = "day")
+  evp.small[[i]] <- list(data = NA, station = site[i], begin = NA, end = NA, by = "day")
 
 data_out$EVP.small <- evp.small
 data_out$EVP.big <- evp.big
@@ -43,8 +43,8 @@ for (i in 1:nrow(stations)){
   df <- data.frame(time = seq(ubegin, uend, by = "day"), dmat)
   ## 对信息进行压缩
   # info <- paste(format(begins,"%Y%m%d"), format(ends,"%Y%m%d"), sep = ":")
-  fname <- sprintf("data/OriginDataInput_xlsx/%03dth_%s%s.xlsx", i, stationId[i], stations$Name[i])
-  # fname <- paste0("data/OriginDataInput_xlsx/", stationId[i], stations$Name[i], ".xlsx")
+  fname <- sprintf("data/OriginDataInput_xlsx/%03dth_%s%s.xlsx", i, site[i], stations$Name[i])
+  # fname <- paste0("data/OriginDataInput_xlsx/", site[i], stations$Name[i], ".xlsx")
   write.xlsx(df, file = fname, row.names = F)
 }
 

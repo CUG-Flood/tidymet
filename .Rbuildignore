@@ -7,3 +7,5 @@
 ^appveyor\.yml$
 ^test$
 ^OUTPUT$
+^codecov\.yml$
+^\.covrignore$

@@ -1,11 +1,5 @@
+source('test/main_pkgs.R')
 library(ncdf4)
-library(floodmap)
-library(magrittr)
-library(data.table)
-library(lubridate)
-
-rm(list = ls())
-source('R/mainfunc_transformat.R')
 
 file_nc <- "met2474_kong.nc"
 file_stations <- "met2474_stations.txt"
@@ -15,10 +9,10 @@ info <- nc_open(file_nc)
 varnames <- names(info$var); nvars <- length(varnames) - 3; varnames <- varnames[1:nvars]
 time <- info$dim$time$vals %>% as.Date(origin = "1970-01-01")
 stations <- read.table(file_stations, header = T, stringsAsFactors = F)
-stationId <- stations$station
+site <- stations$station
 # stations <- fread(file_stations, header = T, sep = "\t")
 nstd <- nrow(stations)
-dist <- rdist.earth(stations[, 3:2], miles = F)#long, lat
+dist <- rdist.earth(stations[, 3:2], miles = F)#lon, lat
 outdir <- "met2474/"
 ## 数据气象值特殊标记已经进行了处理
 # Tavg <- ncvar_get(info, "T2M")
@@ -33,8 +27,8 @@ Interp_Parallel <- function(var, dist, outdir){
   varname <- gsub("-", "_", var)
   sinkfile1 <- paste0("met2474/log/", var, "_1.txt")
   sinkfile2 <- paste0("met2474/log/", var, "_2.txt")
-  eval(parse(text =  sprintf("%s <- Interp(xx, dist, smax = 100, nmax = 10, maxgap = 5, 
-                       time, stationId, sinkfile1, sinkfile2)", varname)))
+  eval(parse(text =  sprintf("%s <- interp_main(xx, dist, smax = 100, nmax = 10, maxgap = 5, 
+                       time, site, sinkfile1, sinkfile2)", varname)))
   eval(parse(text = sprintf("save(%s, file = '%smet2474_Interp_%s.rda')", varname, outdir, var)))
   eval(parse(text = sprintf("rm('%s')", varname)))
   gc(); gc()
@@ -42,11 +36,11 @@ Interp_Parallel <- function(var, dist, outdir){
 }
 # ignore data have been dealed
 varnames <- varnames[!(varnames %in% gsub("met2474_Interp_|.rda","",dir(outdir, pattern = "*.rda")))]
-# profvis::profvis({ X <- Interp(xx, dist, smax = 100, nmax = 10, maxgap = 5, time, stationId) })
+# profvis::profvis({ X <- interp_main(xx, dist, smax = 100, nmax = 10, maxgap = 5, time, site) })
 
 cl <- makeCluster(7, type = "SOCK", outfile = "log.txt")
-tmp <- clusterEvalQ(cl, {library(ncdf4);source("R/MissingInfo/dtime-S3Class.R", encoding = "utf-8")})
-clusterExport(cl, c("time", "stationId"), envir = globalenv())#quickly return
+tmp <- clusterEvalQ(cl, {library(ncdf4)})
+clusterExport(cl, c("time", "site"), envir = globalenv())#quickly return
 
 tm <- snow.time(result <- parLapply(cl, varnames, Interp_Parallel, dist, outdir))
 plot(tm)

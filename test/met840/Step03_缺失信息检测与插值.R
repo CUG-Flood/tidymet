@@ -43,9 +43,9 @@ if (file.exists(infile)){
 
 fstation <- "说明文档/中国气候日志数据V3station839.xlsx"
 stations <- read.xlsx(fstation)
-dist <- rdist.earth(stations[, 3:2], miles = F)#long, lat
+dist <- rdist.earth(stations[, 3:2], miles = F)#lon, lat
 ## ---------------------- prepare for parallel compute -------------------
-stationId <- stations$StationNo
+site <- stations$StationNo
 time_day <- as.Date("1951-01-01"):as.Date("2016-06-30") %>% as.Date()
 
 varnames <- c("PRE", "Tmax", "Tmin", "Tavg", "SSD", "WIN", "PRS", "RHU", "EVP.small", "EVP.big", 
@@ -53,18 +53,18 @@ varnames <- c("PRE", "Tmax", "Tmin", "Tavg", "SSD", "WIN", "PRS", "RHU", "EVP.sm
 met <- list()
 for (i in 7:length(data_in)){
   cat(sprintf("[%d] %s ------------\n", i, varnames[i]))
-  met[[i]] <- Interp(data_in[[i]]$x, dist, smax = 400, nmax = 10, maxgap = 5, time_day, stationId)
+  met[[i]] <- interp_main(data_in[[i]]$x, dist, smax = 400, nmax = 10, maxgap = 5, time_day, site)
 }
 
 ## -------------------- PARALLEL COMPUTE -----------------------
 cl <- makeCluster(8, type = "SOCK", outfile = "log.txt")
 tmp <- clusterEvalQ(cl, source('R/dtime-S3Class.R', encoding = 'UTF-8'))
-clusterExport(cl, c("time_day", "stationId"))
+clusterExport(cl, c("time_day", "site"))
 
 Interp_Parallel <- function(data, dist){
   x <- data$x
   sinkfile <- data$sinkfile
-  Interp(x, dist, smax = 400, nmax = 10, maxgap = 5, time_day, stationId,
+  interp_main(x, dist, smax = 400, nmax = 10, maxgap = 5, time_day, site,
          sinkfile1 = paste0(sinkfile, "1.log"), sinkfile2 = paste0(sinkfile, "2.log"))
 }
 
@@ -99,8 +99,6 @@ save(xx_interp, stationInfo, file = file_interp)
 
 ## ----------------- save into csv files, and cbind variables ------------------
 rm(list = ls())
-library(data.table)#version >= 1.9.7 compile package source from github
-source('R/dtime-S3Class.R', encoding = 'UTF-8')
 
 file_interp <- "data/CMA_met839_daily_AfterInterp.rda"
 file_station <- "说明文档/中国气候日志数据V3station839.xlsx"
@@ -130,7 +128,7 @@ for (i in 1:nrow(stations)){
   ## 对信息进行压缩
   # info <- paste(format(begins,"%Y%m%d"), format(ends,"%Y%m%d"), sep = ":")
   fname <- sprintf("met839_csv/%03dth_%s%s.csv", i, stations[i, 1], stations[i, "Name"])
-  # fname <- paste0("data/OriginDataInput_xlsx/", stationId[i], stations$Name[i], ".xlsx")
+  # fname <- paste0("data/OriginDataInput_xlsx/", site[i], stations$Name[i], ".xlsx")
   fwrite(df, fname, quote = F, sep = ",")
   result[[i]] <- df
 }

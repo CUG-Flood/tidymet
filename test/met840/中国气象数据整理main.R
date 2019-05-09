@@ -8,7 +8,6 @@ library(snow)
 library(fields)
 library(data.table)
 ##====================== global functions================================
-# Rcpp::sourceCpp('R/monthDays.cpp')
 ## 首先查看具有多少个站点，生成站点信息文件，采取并行计算的读取方法，加快速度
 #  获取站点的经度维度高程，迁移时间等信息
 read_table_info <- function(fpath){
@@ -17,7 +16,7 @@ read_table_info <- function(fpath){
   Id <- rownames(df) %>% as.numeric
   x <- x[Id, ]#for retrive timestring
   time <- sprintf("%d-%02d-%02d", x[, 5], x[, 6], x[, 7])
-  cbind(df, time) %>% set_colnames(c("StationNo", "lat", "long", "alt", "time"))
+  cbind(df, time) %>% set_colnames(c("StationNo", "lat", "lon", "alt", "time"))
 }
 read_table <- function(fpath, zcol, zcolname){
   x <- read.table(fpath)[, c(1, zcol)]
@@ -25,17 +24,17 @@ read_table <- function(fpath, zcol, zcolname){
   x#quickly return
 }
 # fnameToDate函数已经修正，内存占用已解决
-read_elementFile <- function(fname, zcol, zcolname, stationId){
-  N <- length(stationId)#站点个数
+read_elementFile <- function(fname, zcol, zcolname, site){
+  N <- length(site)#站点个数
   
   # Id_time <- fnameToTime(fname, returnId = T); days <- length(Id_time)
   timestr <- fnameToTime(fname, DailyDate = T); days <- length(timestr)
   df <- read_table(fname, zcol, zcolname); zcol = 1:length(zcol) + 1#减少操作的数据量
   StationNoi <- df[seq(1, nrow(df), days), 1]#获取具有观测值的台站号
-  id <- match(StationNoi, stationId)
+  id <- match(StationNoi, site)
   
   for (i in seq_along(zcol)){
-    eval(parse(text = sprintf("%s <- matrix(NA, nrow = days, ncol = N, dimnames = list(timestr, stationId))", zcolname[i])))
+    eval(parse(text = sprintf("%s <- matrix(NA, nrow = days, ncol = N, dimnames = list(timestr, site))", zcolname[i])))
     eval(parse(text = sprintf("%s[, id] <- matrix(df[, %d], nrow = days)", zcolname[i], zcol[i])))
   }
   #gc()
@@ -91,7 +90,7 @@ fnameToTime <- function(file, DailyId = FALSE, DailyDate = FALSE){
   }
 }
 
-ChangeFormat_element <- function(fnames, zcol, zcolname, stationId, dir_output){
+ChangeFormat_element <- function(fnames, zcol, zcolname, site, dir_output){
   n <- length(fnames)
   fname_last <- fnames[n]
   time_day <- seq(as.Date("1951-01-01"), fnameToTime(fname_last), by = "day")
@@ -99,7 +98,7 @@ ChangeFormat_element <- function(fnames, zcol, zcolname, stationId, dir_output){
   fnameSuffix <- paste0(format(time_day[1], "%Y%m"), "-", format(time_day[length(time_day)], "%Y%m"), ".rda")# 保存文件后缀名
   
   cl <- Parallel_init()
-  result <- parLapply(cl, fnames, read_elementFile, zcol = zcol, zcolname, stationId = stationId)
+  result <- parLapply(cl, fnames, read_elementFile, zcol = zcol, zcolname, site = site)
   ## 有必要单独进行处理
   getResult <- function(i) lapply(result, function(x) x[[i]]) %>% do.call(rbind, .)
   for (i in seq_along(zcol))
@@ -115,5 +114,3 @@ ChangeFormat_element <- function(fnames, zcol, zcolname, stationId, dir_output){
 
 ##====================== global variables ================================
 ncluster = 8
-
-# format(object.size(a), "Kb")

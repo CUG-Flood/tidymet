@@ -4,17 +4,25 @@
 \alias{read_var}
 \title{read files of China Meteorological data V3}
 \usage{
-read_var(indir, varname = NULL, drop = NULL, limits = NULL)
+read_var(indir, varname = NULL, var_left, var_drop = NULL,
+  limits = NULL, QCmin = NULL)
 }
 \arguments{
 \item{indir}{Directory of txt files}
 
-\item{varname}{meteorological variable names}
+\item{varname}{Character vector, meteorological variable names}
 
-\item{drop}{Numeric, which variable to be droped}
+\item{var_left}{Character vector, The part of left variables among varname}
+
+\item{var_drop}{Character vector, droped variables}
 
 \item{limits}{Numeric, If not null, only read the first \code{limits} files.}
+
+\item{QCmin}{values of QC greater than QCmin will be set as NA.}
 }
 \description{
 read files of China Meteorological data V3
+}
+\note{
+This function is only designed for China Meteorological data V3.
 }

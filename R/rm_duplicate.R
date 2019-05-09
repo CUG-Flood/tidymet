@@ -16,13 +16,12 @@ rm_duplicate <- function(d) {
 }
 
 #' @export
-replace_value <- function(x, value = 32766, newval = NA) {
+replace_value <- function(x, value = 32766, newval = NA_integer_) {
     x[x == value] <- newval
     x
 }
 
 #' flag_realvalue
-#'
 #'
 #' @param x numeric or matrix
 #' @param values Should be in descend order

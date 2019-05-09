@@ -1,3 +1,4 @@
+source('test/main_pkgs.R')
 library(ncdf4)
 
 file <- "E:/GitHub/surface_met2474_daily.nc"
@@ -10,11 +11,11 @@ std <- ncdim_def("std", "std", 1:nstd)
 attrs <- lapply(info$var, function(x) x[c('name', 'units', 'longname')])
 vars <- list()
 for (i in seq_along(attrs)){
-  if (i <= nvars - 3){
-    vars[[i]] <- ncvar_def(attrs[[i]]$name, attrs[[i]]$units, list(t, std), missval = -999, attrs[[i]]$longname)
-  }else{
-    vars[[i]] <- ncvar_def(attrs[[i]]$name, attrs[[i]]$units, std, longname = attrs[[i]]$longname)
-  }
+    if (i <= nvars - 3){
+        vars[[i]] <- ncvar_def(attrs[[i]]$name, attrs[[i]]$units, list(t, std), missval = -999, attrs[[i]]$longname)
+    }else{
+        vars[[i]] <- ncvar_def(attrs[[i]]$name, attrs[[i]]$units, std, longname = attrs[[i]]$longname)
+    }
 }
 # vars[[i + 1]] <- ncvar_def("time", "day", std, longname = "days since 1970-01-01")
 # names(vars) <- c(names(info$var), "time")

@@ -4,8 +4,20 @@
 \alias{rdist.earth}
 \title{rdist.earth}
 \usage{
-rdist.earth(x1, x2 = NULL)
+rdist.earth(x1, x2 = x1)
+}
+\arguments{
+\item{x1}{2 columns matrix, [lat, lon]}
+
+\item{x2}{same as x1}
 }
 \description{
 rdist.earth
+}
+\examples{
+\dontrun{
+loc <- st840[, .(lat, lon)] \%>\% as.matrix()
+dist <- rdist.earth(loc)
+}
+
 }

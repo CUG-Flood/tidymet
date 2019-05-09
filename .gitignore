@@ -2,10 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
-inst/doc
 OUTPUT/
+
+*.log
 
 # ignore data
 *.csv
-
-README.knit.md

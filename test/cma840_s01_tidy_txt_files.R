@@ -7,10 +7,6 @@ source('test/main_pkgs.R')
 #
 # Read data from txt files, and merge into a big csv file for every variable
 
-dirs <- list.dirs(dir_root, full.names = TRUE)[-1]
-
-varnames_pos <- c("site", "lat", "long", "alt", "year", "month", "day")
-
 # MAIN scripts ------------------------------------------------------------
 
 ## 1. Get Station Position Information
@@ -31,8 +27,7 @@ if (s1_station_HisPos) {
     fwrite(stationInfo_hisPos, "OUTPUT/mete840_stations_HistoryPosition.csv")
 
     # 1.2 Get roughly missing information
-    station_HisPos <- df
-    df2  <- station_HisPos[, .(site, date = make_date(year, month, day = 1L))] %>% unique()
+    df2  <- df[, .(site, date = make_date(year, month, day = 1L))] %>% unique()
     info <- df2[, zip_dates(date), .(site)]
     fwrite(info, "OUTPUT/mete840_stations_MissingInfo.csv")
 }
@@ -40,17 +35,29 @@ if (s1_station_HisPos) {
 ## 2. tidy data ---------------------------------------------------------------
 s2_tidy_meteV3 = TRUE
 if (s2_tidy_meteV3) {
-    vars_common <-  c("site", "date", "long", "lat", "alt")
+    source('test/main_pkgs.R')
+    vars_common <-  c("site", "date", "lon", "lat", "alt")
 
-    lst  <- mapply(read_var, dirs, varnames_all) # , limits = NULL
-    lst2 <- mapply(function(x, varname) {
-        x[, c(vars_common, varname, paste0('QC_', varname)), with = F]
-    }, lst, varnames_sel)
+    dirs0 <- dirs[3]
+    lst <- foreach(indir = dirs0, var = names(dirs0)) %do% {
+        varname <- varnames_all[[var]]
+        var_left <- varnames_sel[[var]]
+        var_drop <- c("lat", "lon", "alt")
+        # var_drop <- NULL
+        d <- read_var(indir, varname, var_left, var_drop = var_drop, QCmin = NULL, limits = NULL)
+        d %<>% tidy_meteV3()
+        # outfile <- sprintf("%s/cma_mete840_%s (195101-201903).csv", dir_root, var)
+        # fwrite(d, outfile)
+    }
+    df_prcp <- lst$PRE
+    df <- dcast(df_prcp, date ~ site, value.var = "prcp20_20")
+    st <- openxlsx::read.xlsx("inst/doc/中国气候日志数据V3station840.xlsx") %>% data.table()
+    r <- interp_main(df, st)
 
     outfile_raw <- sprintf("%s/cma_mete840_allvars_raw (195101-201903).csv", dir_root)
     outfile <- sprintf("%s/cma_mete840_allvars (195101-201903).csv", dir_root)
 
-    df_raw <- lst2 %>% {
+    df_raw <- lst %>% map(~.[, 1:5]) %>% {
         reduce(.[2:length(.)], merge, .init = .[[1]], by = vars_common, all = T)
     }
     df <- tidy_meteV3(df_raw)
@@ -59,6 +66,14 @@ if (s2_tidy_meteV3) {
     # df_raw <- fread(outfile_raw)
     # df <- tidy_meteV3(df_raw)
     # all.equal(df_raw, df)
+}
+
+# 3. Interpolation --------------------------------------------------------
+
+
+s3_interp = TRUE
+if (s3_interp) {
+
 }
 
 # lst <- split(df, df$site)

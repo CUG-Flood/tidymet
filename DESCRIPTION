@@ -11,12 +11,15 @@ LazyData: true
 RoxygenNote: 6.1.1
 Depends:
     R (>= 3.1)
-Imports: zoo, data.table, magrittr, 
+Imports: zoo, data.table, magrittr, purrr, 
     lubridate,
     foreach, iterators, 
     plyr
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    covr
+Remotes:
+    kongdd/foreach
 VignetteBuilder: knitr
