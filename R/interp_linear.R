@@ -71,7 +71,7 @@ interp_linear <- function(xx, stationInfo,
                     Ix_miss <- which(is.na(x_trim))
                     # modified 20161021, if y can fix x's partial missing value also use it.
                     if (length(which(!is.na(y_trim) & is.na(x_trim))) == 0) {
-                        cat(sprintf("\t%02dth: failed! 站点%s数据在对应日期也存在缺失!\n", j, station))
+                        cat(sprintf("\t%02dth: failed! site %s: corresponding dates also missing!\n", j, station))
                     } else {
                         # yt -> predict xt, xt is response variable
                         idn <- !(is.na(y_trim) | is.na(x_trim))  #remove nan values

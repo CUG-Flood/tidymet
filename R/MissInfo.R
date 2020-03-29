@@ -28,7 +28,7 @@ missInfo.default <- function(x, date, station = "S1", clipdata = FALSE,
     info <- ""
     xtrim = NULL
     # if x is blank, dateBegin and dateEnd set to be '1951-01-01'
-    date_begin <- "0000-01-01"
+    date_begin <- as.Date("0000-01-01")
     date_end   <- date_begin
     run <- rle(!is.na(x))
     len <- run$lengths
@@ -79,8 +79,8 @@ missInfo.default <- function(x, date, station = "S1", clipdata = FALSE,
         }  #endif length(I_blank) > 0
         i_begin    <- Id[I_havedata[1]] + 1
         i_end      <- Id[I_havedata[length(I_havedata)] + 1]
-        date_begin <- as.character.Date(date[i_begin])
-        date_end   <- as.character.Date(date[i_end])
+        date_begin <- date[i_begin]
+        date_end   <- date[i_end]
 
         n_complete <- i_end - i_begin + 1
         n_miss     <- sum(len[I_blank])  #if I_blank is null, zero will be return
