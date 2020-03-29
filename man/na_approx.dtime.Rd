@@ -12,7 +12,8 @@ na_approx.dtime(x, maxgap = 5, ...)
 \item{maxgap}{maximum number of consecutive \code{NA}s to
     fill. Any longer gaps will be left unchanged. Note that all methods listed
     above can accept \code{maxgap} as it is ultimately passed to the 
-    \code{default} method.}
+    \code{default} method. In \code{na.spline} the \code{maxgap} argument cannot
+    be combined with \code{xout}, though.}
 
 \item{...}{ignored}
 }

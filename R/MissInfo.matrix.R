@@ -1,12 +1,12 @@
 #' @param mat matrix data with row dimemsion is date and col is stations
 #'
-#' @rdname MissInfo
-#' @example man/examples/ex-MissInfo.R
+#' @rdname missInfo
+#' @example man/examples/ex-missInfo.R
 #'
 #' @import iterators
 #' @export
-MissInfo.matrix <- function(mat,
-    time_day = as.Date(rownames(mat)),
+missInfo.matrix <- function(mat,
+    date = as.Date(rownames(mat)),
     site = colnames(mat),
     clipdata = FALSE,
     verbose = TRUE,
@@ -17,8 +17,8 @@ MissInfo.matrix <- function(mat,
     FUN <- ifelse(.parallel, `%dopar%`, `%do%`)
 
     res <- FUN(foreach(x = mat, station = site, i = icount()), {
-        if (verbose) runningId(i, step, N, "MissInfo.matrix")
-        MissInfo.default(x[, 1], station, time_day, clipdata, ...)
+        if (verbose) runningId(i, step, N, "missInfo.matrix")
+        missInfo.default(x[, 1], date, station, clipdata, ...)
     }) %>% set_names(site)
 
     xtrim <- if (clipdata) { map(res, "xtrim") } else NULL
@@ -29,26 +29,26 @@ MissInfo.matrix <- function(mat,
 
 #' @inheritParams interp_main
 #'
-#' @rdname MissInfo
+#' @rdname missInfo
 #' @export
-MissInfo.data.frame <- function(
+missInfo.data.frame <- function(
     df,
     clipdata = FALSE,
     verbose = TRUE,
     .parallel = FALSE,
     ...)
 {
-    time_day <- df$date
+    date <- df$date
     site <- colnames(df)[-1]
     mat  <- df[, -1] %>% as.matrix()
-    MissInfo.matrix(mat, clipdata = clipdata, time_day, site, verbose = verbose)
+    missInfo.matrix(mat, clipdata = clipdata, date, site, verbose = verbose)
 }
 
 #' @param lst list of dtime object
 #'
-#' @rdname MissInfo
+#' @rdname missInfo
 #' @export
-MissInfo.list <- function(lst, clipdata = FALSE,
+missInfo.list <- function(lst, clipdata = FALSE,
     verbose = TRUE,
     .parallel = FALSE, ...)
 {
@@ -57,8 +57,8 @@ MissInfo.list <- function(lst, clipdata = FALSE,
 
     FUN <- ifelse(.parallel, `%dopar%`, `%do%`)
     res <- FUN(foreach(x = lst, station = site, i = icount()), {
-        if (verbose) runningId(i, step, N, "MissInfo.list")
-        MissInfo.default(x$data, x$station, time_day = seq(x), clipdata, ...)
+        if (verbose) runningId(i, step, N, "missInfo.list")
+        missInfo.default(x$data, date = seq(x), x$station, clipdata, ...)
     }) %>% set_names(site)
 
     xtrim <- if (clipdata) { map(res, "xtrim") } else NULL

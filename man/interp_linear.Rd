@@ -4,8 +4,15 @@
 \alias{interp_linear}
 \title{interp_linear}
 \usage{
-interp_linear(xx, stationInfo, dist, smax = 100, nmax = 10,
-  sinkfile = NULL, ...)
+interp_linear(
+  xx,
+  stationInfo,
+  dist,
+  smax = 100,
+  nmax = 10,
+  sinkfile = NULL,
+  ...
+)
 }
 \arguments{
 \item{xx}{list of dtime objects which have missing values}

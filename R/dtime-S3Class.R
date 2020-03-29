@@ -34,6 +34,13 @@ print.dtime <- function(x, ...) {
     # cat('data:\n') print(head(x$data))
 }
 
+print.missInfo <- function(x, ...) {
+    ncol <- ncol(x$info)
+    print(x$info[, 1:(ncol-2)])
+    cat("-----------------------------------------------------\n")
+    print(x$info$detailedInfo[[1]])
+}
+
 #' dtime
 #'
 #' @param data numeric vector or matrix

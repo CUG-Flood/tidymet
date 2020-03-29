@@ -4,8 +4,13 @@
 \alias{dtime}
 \title{dtime}
 \usage{
-dtime(data = NULL, station = NULL, begin = Sys.Date(),
-  end = Sys.Date(), by = "day")
+dtime(
+  data = NULL,
+  station = NULL,
+  begin = Sys.Date(),
+  end = Sys.Date(),
+  by = "day"
+)
 }
 \arguments{
 \item{data}{numeric vector or matrix}

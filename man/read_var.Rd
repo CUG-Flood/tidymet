@@ -4,8 +4,14 @@
 \alias{read_var}
 \title{read files of China Meteorological data V3}
 \usage{
-read_var(indir, varname = NULL, var_left, var_drop = NULL,
-  limits = NULL, QCmin = NULL)
+read_var(
+  indir,
+  varname = NULL,
+  var_left,
+  var_drop = NULL,
+  limits = NULL,
+  QCmin = NULL
+)
 }
 \arguments{
 \item{indir}{Directory of txt files}

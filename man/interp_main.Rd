@@ -4,9 +4,17 @@
 \alias{interp_main}
 \title{interp_main}
 \usage{
-interp_main(df, st, smax = 100, nmax = 10, maxgap = 5,
-  verbose = TRUE, sinkfile1 = "interp_lm1.log",
-  sinkfile2 = "interp_lm2.log", ...)
+interp_main(
+  df,
+  st,
+  smax = 100,
+  nmax = 10,
+  maxgap = 5,
+  verbose = TRUE,
+  sinkfile1 = "interp_lm1.log",
+  sinkfile2 = "interp_lm2.log",
+  ...
+)
 }
 \arguments{
 \item{df}{data.frame, with dimension of [n_date, 1+n_station], and the first
