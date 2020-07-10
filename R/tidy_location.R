@@ -14,8 +14,21 @@ tidy_location <- function(x){
     x
 }
 
-# x: 11242
-dec2deg <- function(x){
+#' @export
+deg2dec <- function(x){
     deg <- floor(x/100)
     deg + (x - deg*100)/60
+}
+
+#' @export
+dec2deg <- function(x) {
+    int <- floor(x)
+    other <- x - int
+    int * 100 + round(other * 60)
+}
+
+#' @export 
+get_alt <- function(x) {
+    x[x >= 100000] <- x[x >= 100000] - 100000 
+    x/10
 }

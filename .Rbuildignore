@@ -9,3 +9,4 @@
 ^OUTPUT$
 ^codecov\.yml$
 ^\.covrignore$
+^data-raw$
