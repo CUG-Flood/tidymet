@@ -53,15 +53,22 @@ l   <- map(lst, ~.x[year == 2019 & month == 12]) %>% map_int(nrow)
 # 5: 58358 20
 # 6: 58726 22
 
-    # 453
+# 453
 # d = fread(files[1])
 ## 获取台站变迁记录
 get_history_location <- function() {
-    st = df[, 1:7] %>% set_colnames(vars_common)
-    st_moveInfo = dlply(st, .(site), function(d) {
-        d <- data.table(d)
-        d$tag = d[,1:4] %>% {!duplicated(.)} %>% cumsum()
-        d$date = d[, make_date(year, month, day)]
+    df = lst$WIN
+    st = df[, .(site, lat, lon, alt, date = make_date(year, month, day))]
+    st = st[date <= "2018-12-31"]
+    st$lon %<>% deg2dec() %>% dec2deg()
+    st$lat %<>% deg2dec() %>% dec2deg()
+    st$alt %<>% get_alt()
+
+    st_moveInfo = ddply(st, .(site), function(d) {
+        # d = st[site == 58246]
+        d$tag = d[, lon^2 + lat^2 + alt^2] %>%
+            {c(1, abs(diff(.)) > 0.1)} %>% cumsum()
+        # d$date = d[, make_date(year, month, day)]
         date_begin = min(d$date)
         date_end   = max(d$date)
 
@@ -70,18 +77,17 @@ get_history_location <- function() {
             .(site, tag, lon, lat, alt)]
     }, .progress = "text")
 
-    st_moveInfo %<>% do.call(rbind, .)
+    # st_moveInfo %<>% do.call(rbind, .)
     st_moveInfo[, moveTimes := max(tag), .(site)]
     st_moveInfo %<>% reorder_name(c("site", "moveTimes", "tag"))
     st_moveInfo[, 7:10] %<>% map(as.Date)
     st_moveInfo[, alt := get_alt(alt)]
-    st_moveInfo[, `:=`(n_all = difftime(date_end, date_begin) %>% as.numeric(),
-                       n_period = difftime(period_date_end, period_date_begin, units = "days") %>% as.numeric())]
+    st_moveInfo[, `:=`(n_all = difftime(date_end, date_begin) %>% as.numeric() %>% add(1),
+                       n_period = difftime(period_date_end, period_date_begin, units = "days") %>% as.numeric() %>% add(1))]
 
-    str_begin = df[1, sprintf("%d%02d", year, month)]
-    str_end   = df[nrow(df), sprintf("%d%02d", year, month)]
-    # library(glue)
+    str_begin = st[1, format(date, "%Y%m")]
+    str_end   = st[nrow(st), format(date, "%Y%m")]
+
     use_data(st_moveInfo, overwrite = TRUE)
     fwrite(st_moveInfo, glue::glue("data-raw/mete2481_站点变迁记录-({str_begin}-{str_end}).csv"))
 }
-
