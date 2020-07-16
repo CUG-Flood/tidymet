@@ -26,7 +26,6 @@ st_moveInfo[site %in% sites_bad[2] & period_date_begin >= "2011-01-01",
             `:=`(lon = 9001, lat = 3123, alt = 470)]
 st_moveInfo[site %in% sites_bad[3]] %>% fix_position()
 
-
 d = st_moveInfo[site == 58246]
 d = st_moveInfo[site == 55294]
 # 55294: the correct position 9141 3216; 中国, 西藏, 安多

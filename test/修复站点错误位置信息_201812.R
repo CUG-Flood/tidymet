@@ -17,11 +17,9 @@ sites_bad_from1961 = c(52378, 53730, 51058, 51329, 51722, 52607, 52884, 53195, 5
 all.equal(info$site, sites_bad_from1961)
 
 st_bad = st[site %in% sites_bad_from1961]
-fwrite(st_bad, "data-raw/st_195101-201812-patches.csv")
+fwrite(st_bad, "data-raw/st_195101-201812-origin.csv")
 
-max_diff <- function(x) {
-    # c(0, diff(x)) %>% abs()
-    x2 = x - x[1]
-    x2
-}
-
+st_patch <- fread("data-raw/st_195101-201812-patches.csv")
+st_patch[,  dist := get_dist(lon, lat), .(site)]
+st_patch[dist > 100]
+# sitenames <- get_sitenames(st_met2481$site[1:10])
