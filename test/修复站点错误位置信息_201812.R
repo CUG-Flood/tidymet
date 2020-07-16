@@ -17,9 +17,22 @@ sites_bad_from1961 = c(52378, 53730, 51058, 51329, 51722, 52607, 52884, 53195, 5
 all.equal(info$site, sites_bad_from1961)
 
 st_bad = st[site %in% sites_bad_from1961]
-fwrite(st_bad, "data-raw/st_195101-201812-origin.csv")
+# fwrite(st_bad, "data-raw/st_195101-201812-origin.csv")
 
 st_patch <- fread("data-raw/st_195101-201812-patches.csv")
+# st_patch$alt %<>% multiply_by(100)
+# fwrite(st_patch, "data-raw/st_195101-201812-patches.csv")
 st_patch[,  dist := get_dist(lon, lat), .(site)]
 st_patch[dist > 100]
+st_patch = reflag(st_patch)
+
+st2 <- st[!(site %in% sites_bad_from1961), ] %>% rbind(st_patch)
+setkeyv(st2, c("site", "tag"))
+
+st_moveInfo <- st2
+use_data(st_moveInfo, overwrite = TRUE)
+fwrite(st_moveInfo, "data-raw/st_195101-201812-adjusted.csv")
+
+# sites_bad2 = st2[dist > 50, site] %>% unique()
+# st2[site %in% sites_bad2, ]
 # sitenames <- get_sitenames(st_met2481$site[1:10])

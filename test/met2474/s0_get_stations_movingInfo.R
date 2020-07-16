@@ -5,7 +5,7 @@ library(iterators)
 library(lubridate)
 
 # dirs = list.dirs("N:/DATA/China/2400climate data")
-dir_root = "N:/DATA/China/2400climate data"
+dir_root = "N:/DATA/China/2400climate data" %>% path.mnt()
 varnames = c("EVP", "GST", "PRE", "PRS", "RHU", "SSD", "TEM", "WIN")
 
 # [826] 69473, 59034 2429 10839   1851 2019 10 235000002     64      5    106      5 9 9 9 9 9
@@ -32,7 +32,7 @@ foreach(varname = varnames[7:8], i = icount()) %do% {
     # lst <- llply(files, fread, .progress = "text")
     df = do.call(rbind, lst)
     invisible()
-    fwrite(df, outfile)
+    # fwrite(df, outfile)
 }
 
 vars_common = c("site", "lat", "lon", "alt", "year", "month", "day")
@@ -66,14 +66,14 @@ get_history_location <- function() {
 
     st_moveInfo = ddply(st, .(site), function(d) {
         # d = st[site == 58246]
-        d$tag = d[, lon^2 + lat^2 + alt^2] %>%
+        d$tag = d[, lon^2 + lat^2 + alt] %>%
             {c(1, abs(diff(.)) > 0.1)} %>% cumsum()
         # d$date = d[, make_date(year, month, day)]
         date_begin = min(d$date)
         date_end   = max(d$date)
 
         d[, .(period_date_begin = min(date), period_date_end = max(date),
-            date_begin, date_end),
+              date_begin, date_end),
             .(site, tag, lon, lat, alt)]
     }, .progress = "text")
 
@@ -81,13 +81,13 @@ get_history_location <- function() {
     st_moveInfo[, moveTimes := max(tag), .(site)]
     st_moveInfo %<>% reorder_name(c("site", "moveTimes", "tag"))
     st_moveInfo[, 7:10] %<>% map(as.Date)
-    st_moveInfo[, alt := get_alt(alt)]
+    # st_moveInfo[, alt := get_alt(alt)]
     st_moveInfo[, `:=`(n_all = difftime(date_end, date_begin) %>% as.numeric() %>% add(1),
                        n_period = difftime(period_date_end, period_date_begin, units = "days") %>% as.numeric() %>% add(1))]
 
     str_begin = st[1, format(date, "%Y%m")]
     str_end   = st[nrow(st), format(date, "%Y%m")]
 
-    use_data(st_moveInfo, overwrite = TRUE)
+    # use_data(st_moveInfo, overwrite = TRUE)
     fwrite(st_moveInfo, glue::glue("data-raw/mete2481_站点变迁记录-({str_begin}-{str_end}).csv"))
 }

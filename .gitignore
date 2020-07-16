@@ -7,4 +7,4 @@ OUTPUT/
 *.log
 
 # ignore data
-*.csv
+# *.csv
