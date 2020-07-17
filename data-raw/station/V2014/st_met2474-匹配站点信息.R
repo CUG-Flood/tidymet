@@ -1,4 +1,4 @@
-## 匹配站点 
+## 匹配站点
 library(purrr)
 library(data.table)
 
@@ -24,7 +24,7 @@ str_id = function(...) do.call(paste, list(..., sep = "-"))
 str_id3 = function(lon, lat, alt, digit = 1) paste(lon, lat, round(alt, digit), sep = "-")
 st[, str_id := str_id(lon, lat)]
 {
-    info = match2(st_2014[, str_id3(lon, lat, alt)], st[, str_id3(lon, lat, alt)]) %>% 
+    info = match2(st_2014[, str_id3(lon, lat, alt)], st[, str_id3(lon, lat, alt)]) %>%
         {cbind(st[.$I_y, .(site)], .)}
     sites_bad = info[duplicated(site), ]$site
     info = info[!(site %in% sites_bad), ]
@@ -38,10 +38,23 @@ foreach(i = 1:nrow(st_left)) %do% {
     st[str_id3(lon, lat, alt) == str_x]
 }
 
-info_final <- data.table(site = c(54517, 54527), I_x = c(805, 814), I_y = c(3467, 3508)) %>% 
+info_final <- data.table(site = c(54517, 54527), I_x = c(805, 814), I_y = c(3467, 3508)) %>%
     rbind(info[, .(site, I_x, I_y)], .) %>% .[order(I_x), ]
 
 st_met2474 = st[info_final$I_y, 1:13] %>% cbind(ID = 1:nrow(.), .)
 # cbind(st_met2474[, .(site, lon, lat, alt)], st_2014)[site %in% sites_bad]
 # fwrite(st_met2474, "data-raw/st_met2474-(1951-2014).csv")
 use_data(st_met2474, overwrite = TRUE)
+
+
+## 2. 检查站点数据起止时间
+load("data-raw/station/V2014/met2474_stationInfo.rda")
+st <- stationInfo$T2M$origin %>% .[, 1:7] %>% data.table()
+
+d <- st_met2474
+d$date_begin2 <- st$DateBegin %>% as.Date()
+
+fmt = "%Y" # %Y%m
+d[format(date_begin, fmt) != format(date_begin2, fmt),
+  .(ID, site, date_begin, date_begin2)]
+# 1758 57797 2007-01-01  1951-08-02
