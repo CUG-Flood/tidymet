@@ -9,7 +9,7 @@
 #' 
 #' @note This function is only designed for China Meteorological data V3.
 #' @export
-read_var <- function(indir, varname = NULL, var_left, var_drop = NULL, 
+read_mete_cma <- function(indir, varname = NULL, var_left, var_drop = NULL, 
     limits = NULL, QCmin = NULL)
 {
     files <- dir(indir, '*.txt|TXT', full.names = T)

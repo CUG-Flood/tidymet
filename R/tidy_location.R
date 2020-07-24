@@ -2,9 +2,9 @@
 #' @export
 tidy_location <- function(x){
     varnames <- colnames(x)
-    x$lat %<>% dec2deg()
-    if ("lon" %in% varnames) x$lon %<>% dec2deg()    
-    if ("long" %in% varnames) x$long %<>% dec2deg()    
+    x$lat %<>% deg2dec()
+    if ("lon" %in% varnames) x$lon %<>% deg2dec()    
+    if ("long" %in% varnames) x$long %<>% deg2dec()    
     
     if ("alt" %in% varnames && (class(x$alt) == "integer")) {
         x$alt[x$alt >= 1e5] <- x$alt[x$alt >= 1e5] - 1e5
