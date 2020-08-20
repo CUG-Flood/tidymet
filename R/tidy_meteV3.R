@@ -53,3 +53,16 @@ tidy_meteV3 <- function(df){
     
     df
 }
+
+
+#' flag_realvalue
+#'
+#' @param x numeric or matrix
+#' @param values Should be in descend order
+flag_realvalue <- function(x, values) {
+    for (i in seq_along(values)) {
+        value <- values[i]
+        x[which(x >= value)] %<>% subtract(value)
+    }
+    return(x)
+}

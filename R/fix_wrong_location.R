@@ -1,11 +1,4 @@
-#' The distance of locations from the first-time location
-#' @export
-get_dist <- function(lon, lat) {
-    P = cbind(lon, lat) %>% deg2dec()
-    if (nrow(P) > 1) {
-        rdist.earth(P[1,,drop = FALSE], P[-1,,drop = FALSE])[1, ] %>% c(0, .)
-    } else 0
-}
+
 
 #' Mode number
 #' @export
