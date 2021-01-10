@@ -1,4 +1,7 @@
-source('test/main_pkgs.R')
+# !/usr/bin/Rscript
+# Dongdong Kong ----------------------------------------------------------------
+source("scripts/main_pkgs.R")
+
 # Dongdong Kong
 # Update 20190508
 # ---------------
