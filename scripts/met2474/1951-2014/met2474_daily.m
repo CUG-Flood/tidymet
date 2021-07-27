@@ -1,6 +1,6 @@
 clear,clc
 %% Writed By Dongdong Kong, 2016-10-19
-%%% °Ñ2474Õ¾µã£¬È«²¿ÕûÀí³É³£ÓÃµÄÊ±¼äĞòÁĞ¸ñÊ½
+%%% æŠŠ2474ç«™ç‚¹ï¼Œå…¨éƒ¨æ•´ç†æˆå¸¸ç”¨çš„æ—¶é—´åºåˆ—æ ¼å¼
 file = 'surface_met2474_daily.nc';
 %%% try precipitation as example
 info = ncinfo(file);
