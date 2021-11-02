@@ -21,7 +21,7 @@ reflag <- function(d) {
     d2 <- unique(d[, 1:12]) %>%
         .[, `:=`(
             moveTimes = .N, tag = 1:.N,
-            dist = get_dist(lon, lat)), .(site)]
+            dist = distToCentralPeriod(lon, lat, n_period)), .(site)]
     d2
 }
 

@@ -1,8 +1,6 @@
 {
-
-    # 2019年数据错误较多
     # dist in the unit of km
-    st_moveInfo[, dist := get_dist(lon, lat), .(site)]
+    st_moveInfo[, dist := distToCentralPeriod(lon, lat), .(site)]
 
     info = st_moveInfo[dist > 100, .N, .(site)][order(-N), ]
 
