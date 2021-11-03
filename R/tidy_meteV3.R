@@ -18,51 +18,114 @@ tidy_meteV3 <- function(df){
     df[df == 32766] <- NA_integer_
 
     # modified according to reference
-    tidy_FUN <- function(vars, FUN){
+    replaceExceed <- function(vars, FUN){
         vars <- intersect(vars, varnames)
         if (length(vars) > 0) {
             df[, (vars) := lapply(.SD, FUN), .SDcols = vars]
         }
     }
 
-    fix_ET  <- . %>% replace_value(value = 32700) %>% flag_realvalue(values = 1000L)
-    tidy_FUN(c("ET_big", "ET_sml"), fix_ET)
+    fix_ET  <- . %>% replace_value(value = 32700) %>% cal_exceed(values = 1000L)
+    replaceExceed(c("ET_big", "ET_sml"), fix_ET)
     
     # G temp
     vars_G <- c("GTmax", "GTmin", "GTavg")
-    fix_G <- . %>% flag_realvalue(values = 10000L)
-    tidy_FUN(vars_G, fix_G)
+    fix_G <- . %>% cal_exceed(values = 10000L)
+    replaceExceed(vars_G, fix_G)
 
     # precipitation
     fix_prcp <- . %>% replace_value(value = 32700, newval = 1L) %>%
-      flag_realvalue(values = c(32000L, 31000L, 30000L))
-    tidy_FUN(c('prcp20_08', 'prcp08_20', 'prcp20_20'), fix_prcp)
+      cal_exceed(values = c(32000L, 31000L, 30000L))
+    replaceExceed(c('prcp20_08', 'prcp08_20', 'prcp20_20'), fix_prcp)
 
     # WIND
-    fix_WIN <- . %>% flag_realvalue(values = 1000L)
-    tidy_FUN(c("WINavg", "WINmax", "WINext"), fix_WIN)
+    fix_WIN <- . %>% cal_exceed(values = 1000L)
+    replaceExceed(c("WINavg", "WINmax", "WINext"), fix_WIN)
 
     # Pressure
     vars_P <- c("Pmax", "Pmin", "Pavg")
-    fix_P <- . %>% flag_realvalue(values = 20000L)
-    tidy_FUN(vars_P, fix_P)
+    fix_P <- . %>% cal_exceed(values = 20000L)
+    replaceExceed(vars_P, fix_P)
     
     # RH
-    fix_RH <- . %>% flag_realvalue(values = 300L)
-    tidy_FUN(vars = c("RHmin", "RHavg"), fix_RH)
+    fix_RH <- . %>% cal_exceed(values = 300L)
+    replaceExceed(vars = c("RHmin", "RHavg"), fix_RH)
     
     df
 }
 
+#' @export
+tidy_mete2000 <- function(df) {
+    varnames <- colnames(df)
+    # modified according to reference
+    replaceExceed <- function(vars, FUN){
+        vars <- intersect(vars, varnames)
+        if (length(vars) > 0) {
+            df[, (vars) := lapply(.SD, FUN), .SDcols = vars]
+        } else {
+            stop("invalid")
+        }
+    }
 
-#' flag_realvalue
+    fprintf("[1]. running ET ...\n")
+    fix_ET  <- . %>% replace_value(value = 32700) %>% cal_exceed(values = 1000L)
+    replaceExceed(c("EVP_sm"), fix_ET) # ET_bg has 999 is normal
+    
+    types = c("avg", "max", "min")
+    fprintf("[2]. running TG ...\n")
+    # G temp
+    vars_TG <- paste0("TG_", types[-1])
+    fix_G <- . %>% cal_exceed(values = 10000L) %>% 
+        cal_below(values = -10000L)
+    replaceExceed(vars_TG, fix_G)
+
+    # precipitation
+    fprintf("[3]. running Prcp ...\n")
+    vars_prcp = paste0("Prcp_", c("20-08", "02-20", "20-20"))
+    # vars_prcp = c("prcp20_08", "prcp08_20", "prcp20_20")
+    fix_prcp <- . %>% replace_value(value = 32700, newval = 1L) %>%
+      cal_exceed(values = c(32000L, 31000L, 30000L))
+    replaceExceed(vars_prcp, fix_prcp)
+
+    # WIND
+    fprintf("[4]. running Wind ...\n")
+    fix_WIN <- . %>% cal_exceed(values = 1000L)
+    replaceExceed(c("WIN_S_Max", "WIN_INST_Max"), fix_WIN) # "WIN_Avg",
+    
+    # Pressure
+    fprintf("[5]. running Pa ...\n")
+    vars_P <- paste0("Pa_", types)
+    fix_P <- . %>% cal_exceed(values = 20000L)
+    replaceExceed(vars_P, fix_P)
+    
+    # RH
+    fprintf("[6]. running RH ...\n")
+    fix_RH <- . %>% cal_exceed(values = 300L)
+    replaceExceed(vars = c("RH_min"), fix_RH)
+    
+    df
+}
+
+#' cal_exceed
 #'
 #' @param x numeric or matrix
 #' @param values Should be in descend order
-flag_realvalue <- function(x, values) {
+#' 
+#' @export
+cal_exceed <- function(x, values) {
     for (i in seq_along(values)) {
         value <- values[i]
         x[which(x >= value)] %<>% subtract(value)
+    }
+    return(x)
+}
+
+#' @export
+#' @rdname cal_exceed
+cal_below <- function(x, values) {
+    for (i in seq_along(values)) {
+        value <- values[i]
+        x[which(x <= value)] %<>% subtract(value)
     }
     return(x)
 }
