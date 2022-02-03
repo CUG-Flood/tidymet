@@ -1,4 +1,6 @@
-#' missInfo
+#' @title missInfo
+#' @name missInfo
+#' 
 #' @export
 missInfo <- function(data, date, station, clipdata = FALSE, ...) UseMethod("missInfo")
 
@@ -15,7 +17,7 @@ missInfo <- function(data, date, station, clipdata = FALSE, ...) UseMethod("miss
 #' @param Info_days If true n_miss seg days will be return
 #' @param collapse missinfo info collapse
 #'
-#' @rdname MissInfo
+#' @rdname missInfo
 #' @export
 missInfo.default <- function(x, date, station = "S1", clipdata = FALSE,
     Info_detail = TRUE, Info_days = TRUE, collapse = ", ") {
@@ -96,7 +98,7 @@ missInfo.default <- function(x, date, station = "S1", clipdata = FALSE,
     obj
 }
 
-#' @rdname MissInfo
+#' @rdname missInfo
 #' @export
 missInfo.dtime <- function(x, ...) {
     missInfo.default(x$data, date = seq(x), x$station, ...)

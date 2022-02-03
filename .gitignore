@@ -8,3 +8,4 @@ OUTPUT/
 
 # ignore data
 # *.csv
+scripts/deprecated/*

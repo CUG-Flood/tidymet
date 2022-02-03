@@ -1,9 +1,9 @@
 #' @param mat matrix data with row dimemsion is date and col is stations
 #'
-#' @rdname missInfo
 #' @example man/examples/ex-missInfo.R
 #'
 #' @import iterators
+#' @rdname missInfo
 #' @export
 missInfo.matrix <- function(mat,
     date = as.Date(rownames(mat)),

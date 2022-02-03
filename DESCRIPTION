@@ -14,12 +14,11 @@ Depends:
 Imports: zoo, data.table, magrittr, purrr, 
     lubridate,
     foreach, iterators, 
+    dplyr,
     plyr
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 2.1.0),
     covr
-Remotes:
-    kongdd/foreach
 VignetteBuilder: knitr

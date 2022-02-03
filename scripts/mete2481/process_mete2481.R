@@ -57,4 +57,3 @@ fwrite(df, glue("{outdir}/ChinaMeteDaily_SURF_CLI_CHN_MUL_DAY_[195101,202003]_pr
 tidy_mete2000(df)
 # %>% not_select_QC()
 write_mete(df, "OUTPUT/ChinaMetDaily_st2481_[195101,202003]/", date_end = NULL, overwrite = TRUE)
-
