@@ -44,7 +44,7 @@ library(Ipaper)
 ind_good = st_hourly %>% map_lgl(~!all(is.na(.))) %>% which()
 # alt2: 传感器高度
 st_met2176_hourly = st_hourly[, ..ind_good] %>% 
-  rename(site = StationID, lon=V05001, lat =V06001, alt = V07001, alt_obs = V07001_2) %>% 
+  rename(site = StationID, lat=V05001, lon =V06001, alt = V07001, alt_obs = V07001_2) %>% 
   mutate(provcode = V_ACODE) %>% 
   select(-StationClass, -NETCODE, -V01301, -V_ACODE, -ProvinceCode, -IsOpenApi) %>% 
   reorder_name(tail = c("provcode", "prov"))
@@ -57,3 +57,16 @@ usethis::use_data(st_met2176_hourly, overwrite = TRUE)
 # fwrite(meteItems_houly, "data-raw/met2176_hourly_variables.csv")
 met2176_hourly_variables = fread("data-raw/met2176_hourly_variables.csv")
 usethis::use_data(met2176_hourly_variables, overwrite = TRUE)
+
+LON = st_met2176_hourly$lat %>% as.numeric()
+LAT = st_met2176_hourly$lon %>% as.numeric()
+st_met2176_hourly$site %<>% as.integer()
+st_met2176_hourly$lon = LON
+st_met2176_hourly$lat = LAT
+st_met2176_hourly$alt %<>% as.numeric()
+st_met2176_hourly$alt_obs %<>% as.numeric()
+
+library(dplyr)
+st_met2176_hourly %<>% 
+  dplyr::rename(name = CNAME) %>% 
+  reorder_name(c("site", "name", "prov"))

@@ -15,8 +15,3 @@ rm_duplicate <- function(d) {
     d_pos[order(site), ]
 }
 
-#' @export
-replace_value <- function(x, value = 32766, newval = NA_integer_) {
-    x[x == value] <- newval
-    x
-}
