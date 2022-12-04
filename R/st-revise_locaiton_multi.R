@@ -36,7 +36,9 @@ locMatchedScore <- function(x, y) {
 #'   score = 0: unfixed
 #'   score = 1: marginal quality fixed
 #'   score = 2: good quality fixed
-#'
+#' 
+#' @import glue
+#' @importFrom crayon green
 #' @export
 revise_locaiton <- function(d, prefix = "",
     dist_max = 100,

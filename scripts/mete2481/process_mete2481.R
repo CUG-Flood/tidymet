@@ -1,8 +1,5 @@
 #! /usr/bin/Rscript
-
 # 1. 处理特殊值flags
-# 2. 
-
 library(plyr)
 library(glue)
 library(foreach)
@@ -12,7 +9,6 @@ library(missInfo)
 library(purrr)
 library(matrixStats)
 # source("test/process.R")
-
 
 # obs_types <- c("avg", "max", "min")
 # ------------------------------------------------------------------------------
@@ -40,14 +36,21 @@ df %<>% reorder_name(tailvars = tailvars)
 
 # df %>% select(!starts_with("QC."))
 
-outdir = "/mnt/h/China_Latest_Meteorological_Data/2400climate\ data"
-fwrite(df, glue("{outdir}/ChinaMeteDaily_SURF_CLI_CHN_MUL_DAY-[195101,202003]_rawfile.csv"))
+library(Ipaper)
+outdir = path.mnt("/mnt/h/China_Latest_Meteorological_Data/2400climate\ data")
+outfile = glue("{outdir}/ChinaMeteDaily_SURF_CLI_CHN_MUL_DAY-[195101,202003]_rawfile.csv")
+
+fwrite(df, outfile)
 
 ## 1. 代表性站点 ---------------------------------------------------------------
+outfile = "Z:/DATA/China/2400climate data/ChinaMeteDaily_SURF_CLI_CHN_MUL_DAY_[195101,202003]_rawfile.csv"
+df = fread(outfile)
+
 # df = fread(files[1], nrows = 1e5)
 # 北京、武汉、广州
-d = df[site %in% c(54511, 57494, 59287)]
-write_mete(d, "rawfile_")
+d = df[site %in% c(54511, 57494, 59287, 58449)] %>% 
+    .[year(date) <= 2019]
+# write_mete(d, "rawfile_")
 tidy_mete2000(d)
 write_mete(d %>% not_select_QC(), "processed_", date_end = "2019-12-31")
 

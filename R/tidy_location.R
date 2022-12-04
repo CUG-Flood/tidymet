@@ -6,7 +6,7 @@ tidy_location <- function(x){
     if ("lon" %in% varnames) x$lon %<>% deg2dec()    
     if ("long" %in% varnames) x$long %<>% deg2dec()    
     
-    if ("alt" %in% varnames && (class(x$alt) == "integer")) {
+    if ("alt" %in% varnames && is.integer(x$alt)) {
         x$alt[x$alt >= 1e5] <- x$alt[x$alt >= 1e5] - 1e5
         x$alt <- x$alt/10
         # x$alt <- x$alt/10

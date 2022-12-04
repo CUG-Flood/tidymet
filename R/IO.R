@@ -36,7 +36,7 @@ read_mete <- function(file, lst_varnames, ...) {
 }
 
 #' @rdname read_mete
-#' @import data.table
+#' @import data.table glue
 #' @export
 write_mete <- function(df, prefix = "", date_end = NULL, overwrite = FALSE) {
     mkdir(dirname(prefix))
@@ -48,7 +48,8 @@ write_mete <- function(df, prefix = "", date_end = NULL, overwrite = FALSE) {
     # }
     temp <- foreach(SITE = sites, i = icount()) %do% {
         runningId(i, 20)
-        outfile <- glue("{prefix}{SITE}.csv")
+        name = st_met2481[site == SITE, name]
+        outfile <- glue("{prefix}{SITE}_{name}.csv")
         if (!file.exists(outfile) || overwrite) {
             d = df[site == SITE]
             if (!is.null(date_end)) d = d[date <= date_end]

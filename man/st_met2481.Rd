@@ -5,7 +5,7 @@
 \alias{st_met2481}
 \title{station information of 2481 daily meteorological data from Gu Xihui}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 2481 rows and 13 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 2481 rows and 16 columns.
 }
 \usage{
 data(st_met2481)

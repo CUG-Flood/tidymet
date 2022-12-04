@@ -35,3 +35,16 @@ replace_value <- function(x, value = 32766, newval = NA_integer_) {
 }
 
 last <- function(x) {x[length(x)]}
+
+#' @importFrom crayon green
+ok <- function(...) {
+  cat(green(...), sep = "\n")
+}
+
+warn <- function(...) {
+  cat(red(...), sep = "\n")
+}
+
+fprintf <- function(fmt, ...) {
+  cat(sprintf(fmt, ...))
+}

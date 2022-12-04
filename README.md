@@ -3,10 +3,7 @@
 
 # missInfo
 
-[![Travis Build
-Status](https://travis-ci.org/kongdd/missInfo.svg?branch=master)](https://travis-ci.org/kongdd/missInfo)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/kongdd/missInfo?branch=master&svg=true)](https://ci.appveyor.com/project/kongdd/missInfo)
+[![R-CMD-check](https://github.com/rpkgs/missInfo/workflows/R-CMD-check/badge.svg)](https://github.com/rpkgs/missInfo/actions)
 [![codecov](https://codecov.io/gh/kongdd/missInfo/branch/master/graph/badge.svg)](https://codecov.io/gh/kongdd/missInfo)
 [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%203%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.html)
 [![CRAN](http://www.r-pkg.org/badges/version/missInfo)](https://cran.r-project.org/package=missInfo)

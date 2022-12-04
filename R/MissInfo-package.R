@@ -5,6 +5,7 @@
 #' @description detect missing information of meteorological data and interpolate missing values using common interpolation methods
 #' @import magrittr foreach plyr
 #' @importFrom stats .lm.fit aggregate df dist median pt
+#' @importFrom methods is
 #' @keywords internal
 "_PACKAGE"
 
