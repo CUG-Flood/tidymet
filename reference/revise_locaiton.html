@@ -32,7 +32,7 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/missinfo.html">Missinfo detect meteorological station missing information and interpolate</a>
+      <a href="../articles/missinfo.html">Missing information detect meteorological station missing information and interpolate</a>
     </li>
   </ul></li>
 <li>
@@ -126,7 +126,49 @@ be regarded as outlier and will be fixed by [revise_location()].</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:     2191 69.11   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:    12053  0.00   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in {    d &lt;- info[site == sitename, ]    prefix &lt;- sprintf("%02dth:%s", i, sitename)    r &lt;- revise_locaiton(d, prefix, dist_max)    r}:</span> task 1 failed - "could not find function "red""</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">[w]: tag=1 unfixed, low location matched score (0)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     [tag=2] ------------------------------------------- </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     site moveTimes tag   lon  lat   alt period_date_begin period_date_end</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 50772         6   1 12951 4752 283.5        1957-10-01      1962-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 50772         6   2 12951 4752 293.5        1963-01-01      1964-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 50772         6   3 12951 4752 296.5        1965-01-01      1970-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 50772         6   4 12915 4807 296.5        1971-01-01      2003-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    n_period  dist      QC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     1918 69.11 unfixed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      731 69.11        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     2191 69.11        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    12053  0.00        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">[w]: tag=2 unfixed, low location matched score (0)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     [tag=3] ------------------------------------------- </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     site moveTimes tag   lon  lat   alt period_date_begin period_date_end</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 50772         6   1 12951 4752 283.5        1957-10-01      1962-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 50772         6   2 12951 4752 293.5        1963-01-01      1964-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 50772         6   3 12951 4752 296.5        1965-01-01      1970-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 50772         6   4 12915 4807 296.5        1971-01-01      2003-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    n_period  dist      QC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     1918 69.11 unfixed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      731 69.11 unfixed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     2191 69.11        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:    12053  0.00        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">[w]: tag=3 suspicious, low location matched score (1)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">[info] 0 sites fixed, 0 sites unfixed, 1 sites not sure</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     site moveTimes tag   lon  lat   alt period_date_begin period_date_end</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 50772         6   1 12951 4752 283.5        1957-10-01      1962-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 50772         6   2 12951 4752 293.5        1963-01-01      1964-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 50772         6   3 12951 4752 296.5        1965-01-01      1970-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 50772         6   4 12915 4807 296.5        1971-01-01      2003-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 50772         6   5 12914 4806 288.0        2004-01-01      2017-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 50772         6   6 12914 4807 300.0        2018-01-01      2018-12-31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    date_begin   date_end n_all n_period  dist</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 1957-10-01 2018-12-31 22372     1918 69.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 1957-10-01 2018-12-31 22372      731 69.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 1957-10-01 2018-12-31 22372     2191 69.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 1957-10-01 2018-12-31 22372    12053  0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 1957-10-01 2018-12-31 22372     5114  2.20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 1957-10-01 2018-12-31 22372      365  1.86</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
