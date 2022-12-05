@@ -1,10 +1,10 @@
 ---
-title: "Missinfo detect meteorological station missing information and interpolate"
+title: "Missing information detect meteorological station missing information and interpolate"
 author: "Dongdong Kong"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{missInfo_01}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

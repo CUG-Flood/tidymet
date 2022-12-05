@@ -16,8 +16,7 @@ Imports: zoo, data.table, magrittr, purrr,
     foreach, iterators, 
     dplyr,
     crayon, glue,
-    plyr, 
-    methods
+    plyr
 Suggests: 
     knitr,
     rmarkdown,

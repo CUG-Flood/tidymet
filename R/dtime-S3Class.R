@@ -1,13 +1,13 @@
 #' @export
 begin.Date <- function(x, ...) {
-    if (!is(x, "Date"))
+    if (!inherits(x, "Date"))
         return("x should be date class")
     x[1]
 }
 
 #' @export
 end.Date <- function(x, ...) {
-    if (!is(x, "Date"))
+    if (!inherits(x, "Date"))
         return("x should be date class")
     x[length(x)]
 }
@@ -52,9 +52,9 @@ print.missInfo <- function(x, ...) {
 #' @export
 dtime <- function(data = NULL, station = NULL, begin = Sys.Date(),
     end = Sys.Date(), by = "day") {
-    if (!is(begin, "Date"))
+    if (!inherits(begin, "Date"))
         begin <- as.Date(begin)
-    if (!is(end, "Date"))
+    if (!inherits(end, "Date"))
         end <- as.Date(end)
     if (begin > end)
         return("begin date should be small or equal to end date!")
