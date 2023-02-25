@@ -1,0 +1,39 @@
+```{r}
+source("./scripts/mete2481/main_met2481.R")
+library(dplyr)
+```
+
+
+```{r}
+dirs <- dir2(dir_root)[1:8] %>% set_names(basename(.))
+dirs
+
+names_prcp = c("Station_Id_d", "Lat", "Lon", "Alti", "Year", "Mon", "Day", "PRE_Max_1h", "PRE_Time_2008", "PRE_Time_0820", "PRE_Time_2020")
+
+del_vars <- function(d, vars) {
+  vars %<>% intersect(colnames(d))
+  select(d, -all_of(vars))
+}
+
+lst = foreach(indir = dirs, varname = names(dirs), i = icount(8)) %do% {
+  fs = dir2(indir, "*.txt|*.TXT")[(4:12)] # 202003之前数据格式不同
+  skip = ifelse(varname == "PRE", 1, 0) 
+  l = map(fs, fread, skip = skip)
+
+  if (varname == "WIN") {
+    l = map(l, ~ del_vars(.x, c("Alti", "WIN_S_10mi_Avg", "WIN_S_2mi_Avg")))
+  }
+  df = do.call(rbind, l)
+  # llply(fs, read_mete, lst_varnames, .progress = "text")
+}
+```
+
+```{r}
+f = fs[1]
+d <- fread(f)
+# subl(f)
+# subl(fs[5])
+
+df$RHU_Avg %>% table()
+df$RHU_Min %>% table()
+```

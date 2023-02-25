@@ -13,7 +13,7 @@ read_data <- function(file, I_sel = 1:13) {
 }
 
 
-dir_root <- path.mnt("N:/DATA/China/2400climate data")
+# dir_root <- path.mnt("N:/DATA/China/2400climate data")
 varnames <- c("EVP", "GST", "PRE", "PRS", "RHU", "SSD", "TEM", "WIN")
 # merge_mete2000_txts(dir_root, is_save = TRUE)
 vars_common <- c("site", "lat", "lon", "alt", "year", "month", "day")
