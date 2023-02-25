@@ -1,4 +1,4 @@
 library(testthat)
-library(missInfo)
+library(tidymet)
 
-test_check("missInfo")
+test_check("tidymet")

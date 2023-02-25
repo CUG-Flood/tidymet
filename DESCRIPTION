@@ -1,4 +1,4 @@
-Package: missInfo
+Package: tidymet
 Type: Package
 Title: missing information detect and interpolate
 Version: 0.1.3

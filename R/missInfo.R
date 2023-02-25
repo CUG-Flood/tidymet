@@ -22,11 +22,11 @@ missInfo <- function(data, date, station, clipdata = FALSE, ...) UseMethod("miss
 missInfo.default <- function(
     x, date, station = "S1", clipdata = FALSE,
     Info_detail = TRUE, Info_days = TRUE, collapse = ", ") {
-  n_miss <- NA
-  n_complete <- 0
+  n_miss <- NA_integer_
+  n_complete <- 0L
 
-  i_begin <- i_end <- 1
-  gap_min <- gap_max <- 0
+  i_begin <- i_end <- 1L
+  gap_min <- gap_max <- 0L
   perc_miss <- 100
   info <- ""
   xtrim <- NULL
@@ -35,7 +35,7 @@ missInfo.default <- function(
   date_end <- date_begin
   run <- rle(!is.na(x))
   len <- run$lengths
-  Id <- c(0, cumsum(len))
+  Id <- c(0L, cumsum(len))
 
   info <- list()
   info_dt <- list()
@@ -85,12 +85,12 @@ missInfo.default <- function(
       } # endif Info_detail
     } # endif length(I_blank) > 0
     
-    i_begin <- Id[I_havedata[1]] + 1
+    i_begin <- Id[I_havedata[1]] + 1L
     i_end <- Id[I_havedata[length(I_havedata)] + 1]
     date_begin <- date[i_begin]
     date_end <- date[i_end]
 
-    n_complete <- i_end - i_begin + 1
+    n_complete <- i_end - i_begin + 1L
     n_miss <- sum(len[I_blank]) # if I_blank is null, zero will be return
     perc_miss <- round(n_miss / n_complete * 100, 2)
   }
@@ -102,9 +102,7 @@ missInfo.default <- function(
   if (clipdata) {
     xtrim <- dtime(data = x[i_begin:i_end], station = station, date_begin, date_end)
   }
-  obj <- list(info = info_miss, xtrim = xtrim)
-  class(obj) <- "missInfo"
-  obj
+  list(info = info_miss, xtrim = xtrim) %>% set_class("missInfo")
 }
 
 #' @rdname missInfo
