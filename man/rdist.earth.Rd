@@ -4,7 +4,7 @@
 \alias{rdist.earth}
 \title{rdist.earth}
 \usage{
-rdist.earth(x1, x2 = x1)
+rdist.earth(x1, x2 = NULL)
 }
 \arguments{
 \item{x1}{2 columns matrix, [lat, lon]}

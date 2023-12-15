@@ -59,3 +59,11 @@ mode <- function(x) {
     names() %>%
     as.numeric()
 }
+
+`%||%` <- function(x, y) {
+  if (is.null(x)) {
+    y
+  } else {
+    x
+  }
+}

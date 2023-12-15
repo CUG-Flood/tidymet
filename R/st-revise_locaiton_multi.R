@@ -7,7 +7,7 @@ distToCentralPeriod <- function(lon, lat, n_period) {
   i <- which.max(n_period) #
 
   if (nrow(P) > 1) {
-    dist <- rdist.earth(P[i, , drop = FALSE], P[, , drop = FALSE])[1, ]
+    dist <- rdist.earth(P[i, , drop = FALSE], P[, , drop = FALSE])
     round(dist, 2)
   } else {
     0

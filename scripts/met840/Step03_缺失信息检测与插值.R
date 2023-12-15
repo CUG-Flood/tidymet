@@ -43,7 +43,7 @@ if (file.exists(infile)){
 
 fstation <- "说明文档/中国气候日志数据V3station839.xlsx"
 stations <- read.xlsx(fstation)
-dist <- rdist.earth(stations[, 3:2], miles = F)#lon, lat
+dist <- rdist.earth(stations[, 3:2])#lon, lat
 ## ---------------------- prepare for parallel compute -------------------
 site <- stations$StationNo
 time_day <- as.Date("1951-01-01"):as.Date("2016-06-30") %>% as.Date()
