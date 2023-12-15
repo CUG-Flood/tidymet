@@ -5,7 +5,7 @@ find_near <- function(p, st) {
   loc <- st[, .(lon, lat)]
   loc %<>%
     check_matrix()
-  dist <- rdist.earth2(loc, p)
+  dist <- rdist.earth(loc, p)
   i <- which.min(dist)
   s <- st[i, ] |>
     cbind(dist = dist[i])
