@@ -30,7 +30,7 @@ be regarded as outlier and will be fixed by [revise_location()].}
 \item{info}{site moving info returned by [get_moveInfo()]}
 }
 \value{
-- sites with not outliers, QC = "";
+- sites with not outliers, QC = '';
 - sites with outliers, for outliers, QC equals:
   score = 0: unfixed
   score = 1: marginal quality fixed
@@ -43,7 +43,7 @@ Revise meteorological station's location error
 Continuous moving location outliers are also considered at here.
 }
 \examples{
-d = st_moveInfo[site == 50772]
+d <- st_moveInfo[site == 50772]
 revise_locaiton_multi(d)
 
 }

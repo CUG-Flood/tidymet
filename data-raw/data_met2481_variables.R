@@ -9,7 +9,7 @@ library(purrr)
 library(matrixStats)
 
 read_data <- function(file, I_sel = 1:13) {
-    fread(file, select = I_sel) %>% set_colnames(vars_common[I_sel])
+  fread(file, select = I_sel) %>% set_colnames(vars_common[I_sel])
 }
 
 

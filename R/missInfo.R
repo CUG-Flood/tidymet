@@ -16,12 +16,12 @@ missInfo <- function(data, date, station, clipdata = FALSE, ...) UseMethod("miss
 #' n_miss information is na.
 #' @param Info_days If true n_miss seg days will be return
 #' @param collapse missinfo info collapse
-#' 
+#'
 #' @rdname missInfo
 #' @export
 missInfo.default <- function(
-    x, date, station = "S1", clipdata = FALSE,
-    Info_detail = TRUE, Info_days = TRUE, collapse = ", ") {
+    x, date, station = "S1", clipdata = FALSE, Info_detail = TRUE, Info_days = TRUE,
+    collapse = ", ") {
   n_miss <- NA_integer_
   n_complete <- 0L
 
@@ -72,19 +72,23 @@ missInfo.default <- function(
           str_miss <- if (n_miss == 0) {
             format(date[imiss_begin], "%Y%m%d")
           } else {
-            paste0(
-              format.Date(date[imiss_begin], "%Y%m%d"), "-",
-              format.Date(date[imiss_end], "%Y%m%d")
-            )
+            paste0(format.Date(date[imiss_begin], "%Y%m%d"), "-", format.Date(
+              date[imiss_end],
+              "%Y%m%d"
+            ))
           }
-          info_dt[[i]] <- data.table(date_begin = time_begin.miss, date_end = time_end.miss, n_miss, str_miss)
+          info_dt[[i]] <- data.table(
+            date_begin = time_begin.miss, date_end = time_end.miss, n_miss,
+            str_miss
+          )
           info[[i]] <- ifelse(Info_days, sprintf("%s, \t%ddays", str_miss, n_miss), str_miss)
         }
         info <- paste(unlist(info), collapse = collapse)
-        info_dt %<>% do.call(rbind, .) # %>% cbind(ngrp = 1:nrow(.), .)
+        info_dt %<>%
+          do.call(rbind, .) # %>% cbind(ngrp = 1:nrow(.), .)
       } # endif Info_detail
     } # endif length(I_blank) > 0
-    
+
     i_begin <- Id[I_havedata[1]] + 1L
     i_end <- Id[I_havedata[length(I_havedata)] + 1]
     date_begin <- date[i_begin]
@@ -95,14 +99,15 @@ missInfo.default <- function(
     perc_miss <- round(n_miss / n_complete * 100, 2)
   }
 
-  info_miss <- data.table(date_begin, date_end, n_complete, n_miss, perc_miss,
-    gap_min, gap_max,
-    info = info, detailedInfo = I(list(info_dt))
+  info_miss <- data.table(date_begin, date_end, n_complete, n_miss, perc_miss, gap_min, gap_max,
+    info = info,
+    detailedInfo = I(list(info_dt))
   )
   if (clipdata) {
     xtrim <- dtime(data = x[i_begin:i_end], station = station, date_begin, date_end)
   }
-  list(info = info_miss, xtrim = xtrim) %>% set_class("missInfo")
+  list(info = info_miss, xtrim = xtrim) %>%
+    set_class("missInfo")
 }
 
 #' @rdname missInfo

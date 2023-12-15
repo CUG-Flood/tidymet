@@ -12,11 +12,11 @@ summary_lm(obj, ...)
 \item{...}{ignored}
 }
 \value{
-a p x 4 matrix with columns for the estimated coefficient, its standard error, 
+a p x 4 matrix with columns for the estimated coefficient, its standard error,
 t-statistic and corresponding (two-sided) p-value. Aliased coefficients are omitted.
 }
 \description{
-summary method for class ".lm.fit".. It's 200 times faster than traditional \code{lm}.
+summary method for class '.lm.fit'.. It's 200 times faster than traditional \code{lm}.
 }
 \examples{
 set.seed(129)

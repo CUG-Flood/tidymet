@@ -1,8 +1,8 @@
 #' station information of 2176 hourly meteorological data
-#' 
-#' @references 
+#'
+#' @references
 #' 1. https://data.cma.cn/data/detail/dataCode/A.0012.0001.html
-#' 
+#'
 #' @keywords datasets
 #' @docType data
 #' @usage data(st_met2176_hourly)

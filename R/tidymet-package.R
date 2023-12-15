@@ -8,7 +8,5 @@
 #' @keywords internal
 "_PACKAGE"
 
-# .onUnload <- function (libpath) {
-#   library.dynam.unload("MissInfo", libpath)
-# }
-# exportPattern("MissInfo")
+# .onUnload <- function (libpath) { library.dynam.unload('MissInfo', libpath) }
+# exportPattern('MissInfo')

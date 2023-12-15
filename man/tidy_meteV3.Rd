@@ -13,7 +13,7 @@ tidy_meteV3(df)
 handle of meteorological flags
 }
 \examples{
-data('mete840')
+data("mete840")
 df1 <- tidy_meteV3(mete840)
 df2 <- tidy_meteV3(mete840[, 1:10])
 }

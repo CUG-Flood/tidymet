@@ -17,8 +17,8 @@ not_select_QC(value)
 }
 \arguments{
 \item{file}{txt file path. The txt file is from http://data.cma.cn/. The
-first 7 columns should be the data of `c("site", "lat", "lon", "alt", "year",
-"month", "day")`.}
+first 7 columns should be the data of `c('site', 'lat', 'lon', 'alt', 'year',
+'month', 'day')`.}
 
 \item{...}{other parameters to [fread()]}
 }
@@ -26,14 +26,14 @@ first 7 columns should be the data of `c("site", "lat", "lon", "alt", "year",
 This function is for original txt file from .
 }
 \examples{
-lst_varnames = list(
-    EVP = c("EVP_sm", "EVP_bg"),
-    PRE = c("Prcp_20-08", "Prcp_02-20", "Prcp_20-20"),
-    RHU = c("RH_avg", "RH_min"),
-    WIN = c("WIN_Avg","WIN_S_Max", "WIN_D_S_Max", "WIN_INST_Max", "WIN_D_INST_Max"),
-    SSD = "SSD",
-    GST = c("TG_avg", "TG_max", "TG_min"),
-    TEM = c("Tair_avg", "Tair_max", "Tair_min"),
-    PRS = c("Pa_avg", "Pa_max", "Pa_min")
+lst_varnames <- list(
+  EVP = c("EVP_sm", "EVP_bg"),
+  PRE = c("Prcp_20-08", "Prcp_02-20", "Prcp_20-20"),
+  RHU = c("RH_avg", "RH_min"),
+  WIN = c("WIN_Avg", "WIN_S_Max", "WIN_D_S_Max", "WIN_INST_Max", "WIN_D_INST_Max"),
+  SSD = "SSD",
+  GST = c("TG_avg", "TG_max", "TG_min"),
+  TEM = c("Tair_avg", "Tair_max", "Tair_min"),
+  PRS = c("Pa_avg", "Pa_max", "Pa_min")
 )
 }

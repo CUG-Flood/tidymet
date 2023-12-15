@@ -14,7 +14,7 @@ zip_dates(dates, by = NULL, format = NULL, check_duplicate = FALSE)
 \item{format}{character string.}
 
 \item{check_duplicate}{If true, duplicated formated dates by `format` will be
-removed. If by = 'month' or 'year', suggest setting \code{check_duplicate} as 
+removed. If by = 'month' or 'year', suggest setting \code{check_duplicate} as
 TRUE.}
 }
 \description{

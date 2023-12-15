@@ -38,6 +38,6 @@ and hisavg interpolation.
 \dontrun{
 data("prcp")
 data("st840")
-r <- interp_main(prcp, st840, smax=200)
+r <- interp_main(prcp, st840, smax = 200)
 }
 }

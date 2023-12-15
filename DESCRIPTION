@@ -1,7 +1,7 @@
 Package: tidymet
 Type: Package
 Title: missing information detect and interpolate
-Version: 0.1.3
+Version: 0.1.4
 Authors@R: c(
     person("Dongdong", "Kong", role = c("aut", "cre"), email = "kongdd.sysu@gmail.com"))
 Description: Meteorological stations data detail missing information detect and interpolate with common methods. 
